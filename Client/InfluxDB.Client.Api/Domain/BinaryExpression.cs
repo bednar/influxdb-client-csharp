@@ -9,18 +9,14 @@
  */
 
 using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
+using InfluxDB.Client.Api.Client;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.ComponentModel.DataAnnotations;
-using OpenAPIDateConverter = InfluxDB.Client.Api.Client.OpenAPIDateConverter;
+using Newtonsoft.Json.Linq;
 
 namespace InfluxDB.Client.Api.Domain
 {
@@ -162,7 +158,7 @@ namespace InfluxDB.Client.Api.Domain
 
     public class BinaryExpressionLeftAdapter : JsonConverter
     {
-        private static readonly Dictionary<string[], Type> Types = new Dictionary<string[], Type>(new Client.DiscriminatorComparer<string>())
+        private static readonly Dictionary<string[], Type> Types = new Dictionary<string[], Type>(new DiscriminatorComparer<string>())
         {
             {new []{ "ArrayExpression" }, typeof(ArrayExpression)},
             {new []{ "FunctionExpression" }, typeof(FunctionExpression)},
@@ -208,11 +204,11 @@ namespace InfluxDB.Client.Api.Domain
             {
                 case JsonToken.StartObject:
 
-                    var jObject = Newtonsoft.Json.Linq.JObject.Load(reader);
+                    var jObject = JObject.Load(reader);
 
                     var discriminator = new []{ "type" }.Select(key => jObject[key].ToString()).ToArray();
 
-                    var type = Types.GetValueOrDefault(discriminator, objectType);
+                    Types.TryGetValue(discriminator, out var type);
 
                     return serializer.Deserialize(jObject.CreateReader(), type);
 
@@ -239,7 +235,7 @@ namespace InfluxDB.Client.Api.Domain
     }
     public class BinaryExpressionRightAdapter : JsonConverter
     {
-        private static readonly Dictionary<string[], Type> Types = new Dictionary<string[], Type>(new Client.DiscriminatorComparer<string>())
+        private static readonly Dictionary<string[], Type> Types = new Dictionary<string[], Type>(new DiscriminatorComparer<string>())
         {
             {new []{ "ArrayExpression" }, typeof(ArrayExpression)},
             {new []{ "FunctionExpression" }, typeof(FunctionExpression)},
@@ -285,11 +281,11 @@ namespace InfluxDB.Client.Api.Domain
             {
                 case JsonToken.StartObject:
 
-                    var jObject = Newtonsoft.Json.Linq.JObject.Load(reader);
+                    var jObject = JObject.Load(reader);
 
                     var discriminator = new []{ "type" }.Select(key => jObject[key].ToString()).ToArray();
 
-                    var type = Types.GetValueOrDefault(discriminator, objectType);
+                    Types.TryGetValue(discriminator, out var type);
 
                     return serializer.Deserialize(jObject.CreateReader(), type);
 

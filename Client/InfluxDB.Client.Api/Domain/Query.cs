@@ -9,18 +9,11 @@
  */
 
 using System;
-using System.Linq;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.ComponentModel.DataAnnotations;
-using OpenAPIDateConverter = InfluxDB.Client.Api.Client.OpenAPIDateConverter;
 
 namespace InfluxDB.Client.Api.Domain
 {
@@ -60,7 +53,7 @@ namespace InfluxDB.Client.Api.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="Query" /> class.
         /// </summary>
-        [JsonConstructorAttribute]
+        [JsonConstructor]
         protected Query() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="Query" /> class.
@@ -72,7 +65,7 @@ namespace InfluxDB.Client.Api.Domain
         /// <param name="rp">required for influxql type queries.</param>
         /// <param name="cluster">required for influxql type queries.</param>
         /// <param name="dialect">dialect.</param>
-        public Query(System.IO.Stream _extern = default(System.IO.Stream), string query = default(string), TypeEnum? type = TypeEnum.Flux, string db = default(string), string rp = default(string), string cluster = default(string), Dialect dialect = default(Dialect))
+        public Query(Stream _extern = default(Stream), string query = default(string), TypeEnum? type = TypeEnum.Flux, string db = default(string), string rp = default(string), string cluster = default(string), Dialect dialect = default(Dialect))
         {
             // to ensure "query" is required (not null)
             if (query == null)
@@ -103,7 +96,7 @@ namespace InfluxDB.Client.Api.Domain
         /// Gets or Sets Extern
         /// </summary>
         [DataMember(Name="extern", EmitDefaultValue=false)]
-        public System.IO.Stream Extern { get; set; }
+        public Stream Extern { get; set; }
 
         /// <summary>
         /// query script to execute.

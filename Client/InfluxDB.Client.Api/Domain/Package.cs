@@ -9,18 +9,12 @@
  */
 
 using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.ComponentModel.DataAnnotations;
-using OpenAPIDateConverter = InfluxDB.Client.Api.Client.OpenAPIDateConverter;
 
 namespace InfluxDB.Client.Api.Domain
 {
@@ -37,7 +31,7 @@ namespace InfluxDB.Client.Api.Domain
         /// <param name="path">package import path.</param>
         /// <param name="package">package name.</param>
         /// <param name="files">package files.</param>
-        public Package(string type = default(string), string path = default(string), string package = default(string), List<System.IO.Stream> files = default(List<System.IO.Stream>))
+        public Package(string type = default(string), string path = default(string), string package = default(string), List<Stream> files = default(List<Stream>))
         {
             this.Type = type;
             this.Path = path;
@@ -70,7 +64,7 @@ namespace InfluxDB.Client.Api.Domain
         /// </summary>
         /// <value>package files</value>
         [DataMember(Name="files", EmitDefaultValue=false)]
-        public List<System.IO.Stream> Files { get; set; }
+        public List<Stream> Files { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
